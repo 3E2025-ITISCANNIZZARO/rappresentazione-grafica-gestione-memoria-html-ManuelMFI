@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione della Memoria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
+        h1 {
+            text-align: center;
+        }
+
+        .memory {
+            border: 2px solid #333;
+            width: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .segment {
+            border: 1px solid #fff;
+            text-align: center;
+            padding: 10px;
+            transition: height 0.3s;
+        }
+
+        .text-segment {
+            background-color: #4CAF50;
+        }
+
+        .data-segment {
+            background-color: #2196F3;
+        }
+
+        .heap-segment {
+            background-color: #FF9800;
+            height: 20px;
+        }
+
+        .stack-segment {
+            background-color: #F44336;
+            height: 20px;
+        }
+
+        .legend {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .color-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rappresentazione Grafica della Gestione della Memoria</h1>
+    
+    <div class="memory">
+        <div class="segment text-segment">Text Segment</div>
+        <div class="segment data-segment">Data Segment</div>
+        <div class="segment heap-segment" id="heap" aria-live="polite">Heap (20px)</div>
+        <div class="segment stack-segment" id="stack" aria-live="polite">Stack (20px)</div>
+    </div>
+    
+    <div class="legend">
+        <h2>Leggenda</h2>
+        <ul>
+            <li><span class="color-box text-segment"></span> Text Segment: Codice eseguibile</li>
+            <li><span class="color-box data-segment"></span> Data Segment: Variabili globali e statiche</li>
+            <li><span class="color-box heap-segment"></span> Heap: Memoria allocata dinamicamente</li>
+            <li><span class="color-box stack-segment"></span> Stack: Chiamate alle funzioni e variabili locali</li>
+        </ul>
+    </div>
+    
+    <div class="controls">
+        <button id="allocate">Allocare Memoria</button>
+        <button id="deallocate">Deallocare Memoria</button>
+    </div>
+
+    <script>
+        let heapSize = 20;
+        let stackSize = 20;
+        const maxStackSize = 200;
+        let stack = [];
+
+        const heapDiv = document.getElementById('heap');
+        const stackDiv = document.getElementById('stack');
+
+        document.getElementById('allocate').addEventListener('click', () => {
+            heapSize += 20;
+            heapDiv.style.height = heapSize + 'px';
+            heapDiv.innerText = 'Heap (' + heapSize + 'px)';
+        });
+
+        document.getElementById('deallocate').addEventListener('click', () => {
+            if (heapSize > 20) {
+                heapSize -= 20;
+                heapDiv.style.height = heapSize + 'px';
+                heapDiv.innerText = 'Heap (' + heapSize + 'px)';
+            }
+        });
+
+        // Simulazione della crescita e riduzione dello stack
+        document.getElementById('allocate').addEventListener('click', () => {
+            if (stack.length < 10) { // Limitiamo a 10 chiamate di funzione simulate
+                stack.push("Funzione " + (stack.length + 1));
+                stackSize += 20;
+                stackDiv.style.height = stackSize + 'px';
+                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
+            }
+        });
+
+        document.getElementById('deallocate').addEventListener('click', () => {
+            if (stack.length > 0) {
+                stack.pop();
+                stackSize -= 20;
+                stackDiv.style.height = stackSize + 'px';
+                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
+            }
+        });
+    </script>
+</body>
+</html>
