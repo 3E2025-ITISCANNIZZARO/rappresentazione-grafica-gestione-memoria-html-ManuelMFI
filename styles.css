@@ -20,22 +20,25 @@ h1 {
     border: 1px solid #fff;
     text-align: center;
     padding: 10px;
+    transition: height 0.3s;
 }
 
 .text-segment {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
 }
 
 .data-segment {
-    background-color: #2196F3; /* Blu */
+    background-color: #2196F3;
 }
 
 .heap-segment {
-    background-color: #FF9800; /* Arancione */
+    background-color: #FF9800;
+    height: 20px;
 }
 
 .stack-segment {
-    background-color: #F44336; /* Rosso */
+    background-color: #F44336;
+    height: 20px;
 }
 
 .legend {
@@ -59,4 +62,20 @@ button {
     padding: 10px 20px;
     margin: 5px;
     cursor: pointer;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.instructions {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
 }
