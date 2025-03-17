@@ -4,73 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione della Memoria</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .memory {
-            border: 2px solid #333;
-            width: 300px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .segment {
-            border: 1px solid #fff;
-            text-align: center;
-            padding: 10px;
-            transition: height 0.3s;
-        }
-
-        .text-segment {
-            background-color: #4CAF50;
-        }
-
-        .data-segment {
-            background-color: #2196F3;
-        }
-
-        .heap-segment {
-            background-color: #FF9800;
-            height: 20px;
-        }
-
-        .stack-segment {
-            background-color: #F44336;
-            height: 20px;
-        }
-
-        .legend {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .color-box {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-
-        .controls {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            margin: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Rappresentazione Grafica della Gestione della Memoria</h1>
@@ -93,23 +27,52 @@
     </div>
     
     <div class="controls">
+        <button id="increaseStack">Aumenta Stack</button>
+        <button id="decreaseStack">Diminuisci Stack</button>
         <button id="allocate">Allocare Memoria</button>
         <button id="deallocate">Deallocare Memoria</button>
     </div>
+    
+    <div class="instructions" id="instructions"><strong>Azioni eseguite:</strong><br><span id="history"></span></div>
 
     <script>
         let heapSize = 20;
         let stackSize = 20;
-        const maxStackSize = 200;
         let stack = [];
 
         const heapDiv = document.getElementById('heap');
         const stackDiv = document.getElementById('stack');
+        const historyDiv = document.getElementById('history');
+
+        function addHistory(action) {
+            historyDiv.innerHTML += action + '<br>';
+        }
+
+        document.getElementById('increaseStack').addEventListener('click', () => {
+            if (stack.length < 10) {
+                stack.push("Funzione " + (stack.length + 1));
+                stackSize += 20;
+                stackDiv.style.height = stackSize + 'px';
+                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
+                addHistory("Aggiunta una funzione allo stack.");
+            }
+        });
+
+        document.getElementById('decreaseStack').addEventListener('click', () => {
+            if (stack.length > 0) {
+                stack.pop();
+                stackSize -= 20;
+                stackDiv.style.height = stackSize + 'px';
+                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
+                addHistory("Rimossa una funzione dallo stack.");
+            }
+        });
 
         document.getElementById('allocate').addEventListener('click', () => {
             heapSize += 20;
             heapDiv.style.height = heapSize + 'px';
             heapDiv.innerText = 'Heap (' + heapSize + 'px)';
+            addHistory("Allocata memoria nell'heap.");
         });
 
         document.getElementById('deallocate').addEventListener('click', () => {
@@ -117,25 +80,7 @@
                 heapSize -= 20;
                 heapDiv.style.height = heapSize + 'px';
                 heapDiv.innerText = 'Heap (' + heapSize + 'px)';
-            }
-        });
-
-        // Simulazione della crescita e riduzione dello stack
-        document.getElementById('allocate').addEventListener('click', () => {
-            if (stack.length < 10) { // Limitiamo a 10 chiamate di funzione simulate
-                stack.push("Funzione " + (stack.length + 1));
-                stackSize += 20;
-                stackDiv.style.height = stackSize + 'px';
-                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
-            }
-        });
-
-        document.getElementById('deallocate').addEventListener('click', () => {
-            if (stack.length > 0) {
-                stack.pop();
-                stackSize -= 20;
-                stackDiv.style.height = stackSize + 'px';
-                stackDiv.innerText = `Stack (${stackSize}px) - ${stack.length} funzioni`;
+                addHistory("Deallocata memoria dall'heap.");
             }
         });
     </script>
